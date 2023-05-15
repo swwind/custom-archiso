@@ -57,4 +57,4 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        files: root.x86_64/livecd/releng/upload/
+        files: root.x86_64/livecd/releng/upload/2023.05.15/archlinuxarm-2023.05.15-aarch64.iso
