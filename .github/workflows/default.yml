@@ -48,11 +48,13 @@ jobs:
       run: sudo LIVECD_PROFILE="$LIVECD_PROFILE" bash makelivecd.sh
     
     - name: Debug
-      run: find upload
+      run: |
+        cd root.x86_64/livecd/releng
+        find upload
 
     # Runs a set of commands using the runners shell
     # upload files
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        files: upload
+        files: root.x86_64/livecd/releng/upload/
