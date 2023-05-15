@@ -46,15 +46,6 @@ jobs:
       env:
         LIVECD_PROFILE: ${{ matrix.LIVECD_PROFILE }}
       run: sudo LIVECD_PROFILE="$LIVECD_PROFILE" bash makelivecd.sh
-      
-      
-    # Runs a single command using the runners shell
-    - name: Run makelivecd script
-      if: ${{ github.event_name != 'push' || !contains(github.event.head_commit.message, format('[skip {0}]', matrix.LIVECD_PROFILE)) }}
-      shell: bash
-      env:
-        LIVECD_PROFILE: ${{ matrix.LIVECD_PROFILE }}
-      run: sudo LIVECD_PROFILE="$LIVECD_PROFILE" bash makelivecd.sh
     
     - name: Debug
       run: find upload
@@ -63,6 +54,5 @@ jobs:
     # upload files
     - name: Release
       uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
       with:
         files: upload
