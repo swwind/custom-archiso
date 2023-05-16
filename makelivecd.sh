@@ -72,7 +72,6 @@ makelivecd() {
         rm -fv /usr/bin/arch-chroot
         pacman --noconfirm --needed -Syu base base-devel python \
             dosfstools mtools squashfs-tools arch-install-scripts libisoburn
-        pacman --noconfirm --needed -Syu linux-firmware-qcom neofetch
 
         curl -Lo aarch64.tar.gz "https://github.com/archlinux-jerry/archiso-aarch64/archive/aarch64.tar.gz"
         tar -xvf aarch64.tar.gz

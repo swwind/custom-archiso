@@ -27,6 +27,7 @@ EOF
 
     # alter packages
     cat << EOF >> packages.x86_64
+linux-firmware-qcom
 EOF
     cat << EOF > packages.x86_64.remove
 EOF
