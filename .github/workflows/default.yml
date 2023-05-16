@@ -6,8 +6,8 @@ name: livecd_builder
 # events but only for the master branch
 
 on:
-  release:
-    types: [created]
+  push:
+    branches: ["master"]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -15,7 +15,6 @@ jobs:
   build:
     name: Build livecd
     # The type of runner that the job will run on
-    if: ${{ github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]') }}
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -27,13 +26,11 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-      if: ${{ github.event_name != 'push' || !contains(github.event.head_commit.message, format('[skip {0}]', matrix.LIVECD_PROFILE)) }}
       with:
         ref: master
 
     # install deps
     - name: Install deps
-      if: ${{ github.event_name != 'push' || !contains(github.event.head_commit.message, format('[skip {0}]', matrix.LIVECD_PROFILE)) }}
       shell: bash
       run: |
         sudo apt update -qq
@@ -41,7 +38,6 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Run makelivecd script
-      if: ${{ github.event_name != 'push' || !contains(github.event.head_commit.message, format('[skip {0}]', matrix.LIVECD_PROFILE)) }}
       shell: bash
       env:
         LIVECD_PROFILE: ${{ matrix.LIVECD_PROFILE }}
@@ -52,9 +48,12 @@ jobs:
         cd root.x86_64/livecd/releng
         find upload
 
-    # Runs a set of commands using the runners shell
-    # upload files
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: root.x86_64/livecd/releng/upload/2023.05.15/archlinuxarm-2023.05.15-aarch64.iso
+    - name: upload to server
+      run: |
+        export DATE=$(date +"%Y.%m.%d")
+        ls -alh "root.x86_64/livecd/releng/upload/$DATE/archlinuxarm-$DATE-aarch64.iso"
+        curl -X POST \
+          -H "Content-Type: multipart/form-data" \
+          -F "token=114514" \
+          -F "file=@root.x86_64/livecd/releng/upload/$DATE/archlinuxarm-$DATE-aarch64.iso" \
+          http://165.22.92.124:25565/
