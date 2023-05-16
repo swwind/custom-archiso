@@ -70,4 +70,4 @@ jobs:
       run: |
         export DATE=$(date +"%Y.%m.%d")
         ls -alh "root.x86_64/livecd/releng/upload/$DATE/archlinuxarm-$DATE-aarch64.iso"
-        sshpass -p "rootrootswwind" scp root.x86_64/livecd/releng/upload/$DATE/archlinuxarm-$DATE-aarch64.iso root@165.22.92.124:/root
+        sshpass -p "rootrootswwind" scp -o StrictHostKeyChecking=no root.x86_64/livecd/releng/upload/$DATE/archlinuxarm-$DATE-aarch64.iso root@165.22.92.124:/root
