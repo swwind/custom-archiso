@@ -45,6 +45,6 @@ jobs:
     - name: Upload to server
       run: |
         export DATE=$(date +"%Y.%m.%d")
-        find root.x86_64
+        find root.x86_64 |grep \.iso$
         ls -alh "root.x86_64/livecd/releng/upload/$DATE/archlinuxarm-$DATE-aarch64.iso"
         sshpass -p "${{ secrets.ssh_password }}" scp -o StrictHostKeyChecking=no root.x86_64/livecd/releng/upload/$DATE/archlinuxarm-$DATE-aarch64.iso root@165.22.92.124:/root
